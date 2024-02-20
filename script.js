@@ -4,6 +4,7 @@ const short_rest = document.querySelector('.app__card-button--curto');
 const long_rest = document.querySelector('.app__card-button--longo');
 const banner = document.querySelector('.app__image');
 const title = document.querySelector('.app__title');
+const buttons = document.querySelectorAll('.app__card-button');
 
 let list_1 = [focus_button, short_rest, long_rest];
 let list_2 = ['foco', 'descanso-curto', 'descanso-longo'];
@@ -11,9 +12,14 @@ let list_2 = ['foco', 'descanso-curto', 'descanso-longo'];
 function change_context(button, list, list_strng, title){
     if (list.includes(button)) {
         const index = list.indexOf(button);
+        const context = list_strng[index];
         button.addEventListener('click', () => {
-            html.setAttribute('data-contexto', list_strng[index]);
-            banner.setAttribute('src', `/assets/${list_strng[index]}.png`);
+            buttons.forEach(function (context) {
+                context.classList.remove('active');
+            });
+            button.classList.add('active');
+            html.setAttribute('data-contexto', context);
+            banner.setAttribute('src', `/assets/${context}.png`);
             switch (list_strng[index]) {
 
                 case "foco":
