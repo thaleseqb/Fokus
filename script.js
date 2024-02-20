@@ -7,8 +7,15 @@ const title = document.querySelector('.app__title');
 const buttons = document.querySelectorAll('.app__card-button');
 const music_focus_input = document.querySelector('#alternar-musica');
 const music = new Audio('/sounds/luna-rise-part-one.mp3');
+const start_focus = new Audio('/sounds/play.wav');
+const pause_focus = new Audio('/sounds/pause.mp3');
+const finish = new Audio('/sounds/beep.mp3');
+const startPause_button = document.querySelector('#start-pause');
+let intervaloId = null;
 music.loop =true;
+let aux = 0;
 
+let elapsed_time = 5
 let list_1 = [focus_button, short_rest, long_rest];
 let list_2 = ['foco', 'descanso-curto', 'descanso-longo'];
 
@@ -64,4 +71,38 @@ function change_context(button, list, list_strng, title){
 change_context(short_rest, list_1, list_2, title);
 change_context(focus_button, list_1, list_2, title);
 change_context(long_rest, list_1, list_2, title);
+
+const regressive_counting =  () => {
+    if (elapsed_time <= 0) {
+        stop();
+        alert("negative time doesn't existis");
+        finish.play();
+        return;
+    }
+    elapsed_time -= 1;
+    console.log(elapsed_time);
+};
+
+startPause_button.addEventListener('click', start_pause);
+startPause_button.addEventListener('click', () => {
+    if (aux%2 == 0) {
+        start_focus.play();
+    } else {
+        pause_focus.play();
+    }
+    aux += 1;
+});
+
+function start_pause(){
+    if (intervaloId) {
+        stop();
+        return;
+    }
+    intervaloId = setInterval(regressive_counting, 1000);
+};
+
+function stop() {
+    clearInterval(intervaloId);
+    intervaloId = null;
+}
 
