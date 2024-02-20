@@ -14,6 +14,8 @@ const startPause_button = document.querySelector('#start-pause');
 let intervaloId = null;
 music.loop =true;
 let aux = 0;
+const startorpause = document.querySelector('#start-pause span');
+const image = document.querySelector('.app__card-primary-butto-icon');
 
 let elapsed_time = 5
 let list_1 = [focus_button, short_rest, long_rest];
@@ -74,8 +76,8 @@ change_context(long_rest, list_1, list_2, title);
 
 const regressive_counting =  () => {
     if (elapsed_time <= 0) {
-        stop();
         alert("negative time doesn't existis");
+        stop();
         finish.play();
         return;
     }
@@ -84,11 +86,16 @@ const regressive_counting =  () => {
 };
 
 startPause_button.addEventListener('click', start_pause);
+
 startPause_button.addEventListener('click', () => {
     if (aux%2 == 0) {
         start_focus.play();
+        startorpause.innerHTML = `Pausar`;
+        image.setAttribute('src', "/assets/pause.png");
     } else {
         pause_focus.play();
+        startorpause.innerHTML = `Começar`;
+        image.setAttribute('src', "/assets/play_arrow.png");
     }
     aux += 1;
 });
