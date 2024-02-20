@@ -5,9 +5,20 @@ const long_rest = document.querySelector('.app__card-button--longo');
 const banner = document.querySelector('.app__image');
 const title = document.querySelector('.app__title');
 const buttons = document.querySelectorAll('.app__card-button');
+const music_focus_input = document.querySelector('#alternar-musica');
+const music = new Audio('/sounds/luna-rise-part-one.mp3');
+music.loop =true;
 
 let list_1 = [focus_button, short_rest, long_rest];
 let list_2 = ['foco', 'descanso-curto', 'descanso-longo'];
+
+music_focus_input.addEventListener('change', () => {
+    if (music.paused){
+        music.play();
+    } else {
+        music.pause();
+    }
+});
 
 function change_context(button, list, list_strng, title){
     if (list.includes(button)) {
