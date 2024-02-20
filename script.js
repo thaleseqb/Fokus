@@ -16,10 +16,12 @@ music.loop =true;
 let aux = 0;
 const startorpause = document.querySelector('#start-pause span');
 const image = document.querySelector('.app__card-primary-butto-icon');
+const screen_time = document.querySelector('#timer')
 
-let elapsed_time = 5
-let list_1 = [focus_button, short_rest, long_rest];
-let list_2 = ['foco', 'descanso-curto', 'descanso-longo'];
+let elapsed_time = 1500
+let list_buttons = [focus_button, short_rest, long_rest];
+let list_string = ['foco', 'descanso-curto', 'descanso-longo'];
+let list_tm = [1500, 300, 900]
 
 music_focus_input.addEventListener('change', () => {
     if (music.paused){
@@ -29,7 +31,7 @@ music_focus_input.addEventListener('change', () => {
     }
 });
 
-function change_context(button, list, list_strng, title){
+function change_context(button, list, list_strng, title, l_tm){
     if (list.includes(button)) {
         const index = list.indexOf(button);
         const context = list_strng[index];
@@ -38,6 +40,8 @@ function change_context(button, list, list_strng, title){
                 context.classList.remove('active');
             });
             button.classList.add('active');
+            elapsed_time = l_tm[index]
+            show_time()
             html.setAttribute('data-contexto', context);
             banner.setAttribute('src', `/assets/${context}.png`);
             switch (list_strng[index]) {
@@ -70,9 +74,9 @@ function change_context(button, list, list_strng, title){
     };
 };
 
-change_context(short_rest, list_1, list_2, title);
-change_context(focus_button, list_1, list_2, title);
-change_context(long_rest, list_1, list_2, title);
+change_context(short_rest, list_buttons, list_string, title, list_tm);
+change_context(focus_button, list_buttons, list_string, title, list_tm);
+change_context(long_rest, list_buttons, list_string, title, list_tm);
 
 const regressive_counting =  () => {
     if (elapsed_time <= 0) {
@@ -82,7 +86,7 @@ const regressive_counting =  () => {
         return;
     }
     elapsed_time -= 1;
-    console.log(elapsed_time);
+    show_time();
 };
 
 startPause_button.addEventListener('click', start_pause);
@@ -113,3 +117,10 @@ function stop() {
     intervaloId = null;
 }
 
+function show_time() {
+    const time = new Date(elapsed_time * 1000)
+    const formated_time = time.toLocaleString('pt-Br', {minute: '2-digit', second: '2-digit'})
+    screen_time.innerHTML = `${formated_time}`
+}
+
+show_time()
