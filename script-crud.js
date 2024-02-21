@@ -2,7 +2,8 @@ const button_add_task = document.querySelector('.app__button--add-task');
 const add_form_task = document.querySelector('.app__form-add-task');
 const text_area = document.querySelector('.app__form-textarea');
 const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-const ul_task = document.querySelector('.app__section-task-list')
+const ul_task = document.querySelector('.app__section-task-list');
+const cancel_taskbt = document.querySelector('.app__form-footer__button--cancel');
 
 function update_task() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -25,11 +26,10 @@ function create_element_task(task) {
     par.classList.add('app__section-task-list-item-description')
 
     const button = document.createElement('button');
-    button.classList.add('app_button-edit')
+    button.classList.add('app_button-edit');
 
     button.onclick = () => {
-        const new_task = prompt('Edite sua tarefa')
-        console.log('new description task: ', new_task)
+        const new_task = prompt('Edite sua tarefa');
         if (new_task) {
             par.textContent = new_task;
             task.description = new_task;
@@ -63,6 +63,11 @@ add_form_task.addEventListener('submit', (event) => {
     update_task()
     text_area.value = '';
     add_form_task.classList.add('hidden');
+});
+
+cancel_taskbt.addEventListener('click', () => {
+    text_area.value = '';
+    add_form_task.classList.toggle('hidden');
 });
 
 tasks.forEach(task => {
