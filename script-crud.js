@@ -29,10 +29,13 @@ function create_element_task(task) {
 
     button.onclick = () => {
         const new_task = prompt('Edite sua tarefa')
-        par.textContent = new_task
-        task.description = new_task
-        update_task()
-    }
+        console.log('new description task: ', new_task)
+        if (new_task) {
+            par.textContent = new_task;
+            task.description = new_task;
+            update_task();
+        };
+    };
 
     const image_button = document.createElement('img');
     image_button.setAttribute('src',"/assets/edit.png");
