@@ -117,13 +117,16 @@ document.addEventListener('endedfocus', () => {
     };
 });
 
-concluded_task.onclick = () => {
-    const selector = '.app__section-task-list-item-complete'
+const remove_tasks = (only_complete) => {
+    const selector = only_complete ? '.app__section-task-list-item-complete' : '.app__section-task-list-item';
     document.querySelectorAll(selector)
         .forEach(element => {
             element.remove();
         });
 
-    tasks = tasks.filter(task => !task.complete);
+    tasks = only_complete ? tasks.filter(task => !task.complete) : [];
     update_task();
 };
+
+concluded_task.onclick = () => remove_tasks(true);
+remove_all.onclick = () => remove_tasks(false);
