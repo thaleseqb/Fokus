@@ -1,10 +1,12 @@
 const button_add_task = document.querySelector('.app__button--add-task');
 const add_form_task = document.querySelector('.app__form-add-task');
 const text_area = document.querySelector('.app__form-textarea');
-const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 const ul_task = document.querySelector('.app__section-task-list');
 const cancel_taskbt = document.querySelector('.app__form-footer__button--cancel');
 const act_task_descp = document.querySelector('.app__section-active-task-description');
+const concluded_task = document.getElementById('btn-remover-concluidas')
+const remove_all = document.getElementById('btn-remover-todas')
 
 let selected_task = null;
 let li_selected_task = null;
@@ -114,3 +116,14 @@ document.addEventListener('endedfocus', () => {
         update_task();
     };
 });
+
+concluded_task.onclick = () => {
+    const selector = '.app__section-task-list-item-complete'
+    document.querySelectorAll(selector)
+        .forEach(element => {
+            element.remove();
+        });
+
+    tasks = tasks.filter(task => !task.complete);
+    update_task();
+};
