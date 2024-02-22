@@ -4,6 +4,9 @@ const text_area = document.querySelector('.app__form-textarea');
 const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 const ul_task = document.querySelector('.app__section-task-list');
 const cancel_taskbt = document.querySelector('.app__form-footer__button--cancel');
+const act_task_descp = document.querySelector('.app__section-active-task-description');
+
+let selected_task = null;
 
 function update_task() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -45,6 +48,24 @@ function create_element_task(task) {
     li.append(par);
     li.append(button);
 
+    li.onclick = () => {
+        document.querySelectorAll('.app__section-task-list-item-active')
+            .forEach(element => {
+                element.classList.remove('app__section-task-list-item-active');
+            });
+            
+        if (selected_task == task) {
+            act_task_descp.textContent = '';
+            selected_task = null;
+            return;
+        };
+
+        selected_task = task;
+        act_task_descp.textContent = `${task.description} em andamento`;
+
+        li.classList.add('app__section-task-list-item-active');
+    };
+
     return li
 };
 
@@ -74,3 +95,4 @@ tasks.forEach(task => {
     const element_task = create_element_task(task)
     ul_task.append(element_task);
 });
+
