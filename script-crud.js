@@ -26,8 +26,8 @@ function create_element_task(task) {
     `
 
     const par = document.createElement('p');
-    par.textContent = task.description
-    par.classList.add('app__section-task-list-item-description')
+    par.textContent = task.description;
+    par.classList.add('app__section-task-list-item-description');
 
     const button = document.createElement('button');
     button.classList.add('app_button-edit');
@@ -49,25 +49,31 @@ function create_element_task(task) {
     li.append(par);
     li.append(button);
 
-    li.onclick = () => {
-        document.querySelectorAll('.app__section-task-list-item-active')
-            .forEach(element => {
-                element.classList.remove('app__section-task-list-item-active');
-            });
-            
-        if (selected_task == task) {
-            act_task_descp.textContent = '';
-            selected_task = null;
-            li_selected_task = null;
-            return;
+    if (task.complete) {
+        li.classList.add('app__section-task-list-item-complete');
+        button.setAttribute('disabled', 'disabled');        
+    } else {
+        li.onclick = () => {
+            document.querySelectorAll('.app__section-task-list-item-active')
+                .forEach(element => {
+                    element.classList.remove('app__section-task-list-item-active');
+                });
+                
+            if (selected_task == task) {
+                act_task_descp.textContent = '';
+                selected_task = null;
+                li_selected_task = null;
+                return;
+            };
+    
+            selected_task = task;
+            li_selected_task = li;
+            act_task_descp.textContent = `${task.description} em andamento`;
+    
+            li.classList.add('app__section-task-list-item-active');
         };
-
-        selected_task = task;
-        li_selected_task = li
-        act_task_descp.textContent = `${task.description} em andamento`;
-
-        li.classList.add('app__section-task-list-item-active');
     };
+
 
     return li
 };
@@ -84,7 +90,7 @@ add_form_task.addEventListener('submit', (event) => {
     tasks.push(task);
     const element_task = create_element_task(task);
     ul_task.append(element_task);
-    update_task()
+    update_task();
     text_area.value = '';
     add_form_task.classList.add('hidden');
 });
@@ -95,7 +101,7 @@ cancel_taskbt.addEventListener('click', () => {
 });
 
 tasks.forEach(task => {
-    const element_task = create_element_task(task)
+    const element_task = create_element_task(task);
     ul_task.append(element_task);
 });
 
@@ -104,5 +110,7 @@ document.addEventListener('endedfocus', () => {
         li_selected_task.classList.remove('app__section-task-list-item-active');
         li_selected_task.classList.add('app__section-task-list-item-complete');
         li_selected_task.querySelector('button').setAttribute('disabled', 'disabled');
+        selected_task.complete = true;
+        update_task();
     };
 });
