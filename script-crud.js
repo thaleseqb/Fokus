@@ -7,6 +7,7 @@ const cancel_taskbt = document.querySelector('.app__form-footer__button--cancel'
 const act_task_descp = document.querySelector('.app__section-active-task-description');
 
 let selected_task = null;
+let li_selected_task = null;
 
 function update_task() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -57,10 +58,12 @@ function create_element_task(task) {
         if (selected_task == task) {
             act_task_descp.textContent = '';
             selected_task = null;
+            li_selected_task = null;
             return;
         };
 
         selected_task = task;
+        li_selected_task = li
         act_task_descp.textContent = `${task.description} em andamento`;
 
         li.classList.add('app__section-task-list-item-active');
@@ -96,3 +99,10 @@ tasks.forEach(task => {
     ul_task.append(element_task);
 });
 
+document.addEventListener('endedfocus', () => {
+    if (selected_task && li_selected_task) {
+        li_selected_task.classList.remove('app__section-task-list-item-active');
+        li_selected_task.classList.add('app__section-task-list-item-complete');
+        li_selected_task.querySelector('button').setAttribute('disabled', 'disabled');
+    };
+});

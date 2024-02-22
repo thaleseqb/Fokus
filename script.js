@@ -44,7 +44,7 @@ function change_context(button, list, list_strng, title, l_tm){
             show_time()
             html.setAttribute('data-contexto', context);
             banner.setAttribute('src', `/assets/${context}.png`);
-            switch (list_strng[index]) {
+            switch (context) {
 
                 case "foco":
                     title.innerHTML = `
@@ -81,6 +81,11 @@ change_context(long_rest, list_buttons, list_string, title, list_tm);
 const regressive_counting =  () => {
     if (elapsed_time <= 0) {
         alert("negative time doesn't existis");
+        const active_foco = html.getAttribute('data-contexto') == 'foco'
+        if (active_foco) {
+            const event = new CustomEvent('endedfocus');
+            document.dispatchEvent(event);
+        }
         stop();
         finish.play();
         return;
